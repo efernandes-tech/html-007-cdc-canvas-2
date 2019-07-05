@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Arrastando Objeto Via Touch</title>
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
+    <script src="cordova.js"></script>
+    <script src="rAF.js"></script>
+    <script>
+        var canvas, context;
+        var x, y, raio = 32;
+        var arrastando;
+
+        window.onload = function () {
+            // Troque as linhas quando for fazer deploy no aparelho.
+            // document.addEventListener('deviceready', iniciar);
+            iniciar();
+        }
+
+        function iniciar() {
+            canvas = document.getElementById('touch');
+            context = canvas.getContext('2d');
+            
+            x = canvas.width / 2;
+            y = canvas.height / 2;
+
+            canvas.addEventListener('touchstart', touchStart);
+            canvas.addEventListener('touchmove', touchMove);
+            canvas.addEventListener('touchend', touchEnd);
+
+            requestAnimationFrame(animar);
+        }
+
+        function animar() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            context.save();
+
+            context.fillStyle = 'red';
+            context.strokeStyle = 'blue';
+            context.lineWidth = 2;
+
+            context.beginPath();
+            context.arc(x, y, raio, 0, Math.PI * 2);
+            context.fill();
+            context.stroke();
+
+            context.restore();
+
+            requestAnimationFrame(animar);
+        }
+
+        function touchStart(e) {
+            var xToque = e.changedTouches[0].pageX - canvas.offsetLeft;
+            var yToque = e.changedTouches[0].pageY - canvas.offsetTop;
+
+            var distanciaX = Math.abs(x - xToque);
+            var distanciaY = Math.abs(y - yToque);
+
+            // Pitágoras
+            if (distanciaX * distanciaX + distanciaY * distanciaY <= raio * raio) {
+                arrastando = true;
+                x = xToque;
+                y = yToque;
+            }
+
+            if (navigator.userAgent.match(/Android/i)) {
+                e.preventDefault();
+            }
+        }
+
+        function touchMove(e) {
+            if (arrastando) {
+                x = e.changedTouches[0].pageX - canvas.offsetLeft;
+                y = e.changedTouches[0].pageY - canvas.offsetTop;
+            }
+        }
+
+        function touchEnd(e) {
+            arrastando = false;
+        }
+    </script>
+</head>
+<body>
+    <canvas id="touch" width="320" height="240"></canvas>
+</body>
+</head>

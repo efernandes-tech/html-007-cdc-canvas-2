@@ -27,3 +27,8 @@
             -keystore ederson-fernandes.keystore
             MeuJogo.apk
             ederson_fernandes
+- 3.1 Arrastando um objeto
+    cordova create touch
+    cd touch
+    cordova platform add android
+    cordova run android
