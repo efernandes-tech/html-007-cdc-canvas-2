@@ -10,3 +10,20 @@
 - 2.4 Rodando o projeto padrão
     cd primeiro
     cordova run android
+- 2.7 Gerar pacote APK assinado para o Android
+    - Gerando uma chave de assinatura em uma pasta fora do projeto com o comando:
+        keytool
+            -genkey -v
+            -keystore ederson-fernandes.keystore
+            -alias ederson_fernandes
+            -keyalg RSA
+            -keysize 2048
+            -validity 10000
+    - Gerando o APK para distribuição na pasta do projeto:
+        cordova build android --release
+    - Assinando o APK movido para a pasta onde foi gerado o key:
+        jarsigner
+            -verbose -sigalg SHA1withRSA -digestalg SHA1
+            -keystore ederson-fernandes.keystore
+            MeuJogo.apk
+            ederson_fernandes
