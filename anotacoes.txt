@@ -7,3 +7,6 @@
     cordova create primeiro
     cd primeiro
     cordova platform add android
+- 2.4 Rodando o projeto padrão
+    cd primeiro
+    cordova run android
