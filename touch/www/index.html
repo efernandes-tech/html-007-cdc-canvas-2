@@ -8,13 +8,21 @@
     <script src="rAF.js"></script>
     <script>
         var canvas, context;
-        var x, y, raio = 32;
+        var x, y, raio = 42;
         var arrastando;
+        var xAnterior, yAnterior;
+        var imgBruxa;
 
         window.onload = function () {
-            // Troque as linhas quando for fazer deploy no aparelho.
-            // document.addEventListener('deviceready', iniciar);
-            iniciar();
+            imgBruxa = new Image();
+            imgBruxa.src = 'img/bruxa.png';
+
+            // Esperar a imagem carregar.
+            imgBruxa.onload = function() {
+                // Troque as linhas quando for fazer deploy no aparelho.
+                // document.addEventListener('deviceready', iniciar);
+                iniciar();
+            }
         }
 
         function iniciar() {
@@ -34,18 +42,7 @@
         function animar() {
             context.clearRect(0, 0, canvas.width, canvas.height);
 
-            context.save();
-
-            context.fillStyle = 'red';
-            context.strokeStyle = 'blue';
-            context.lineWidth = 2;
-
-            context.beginPath();
-            context.arc(x, y, raio, 0, Math.PI * 2);
-            context.fill();
-            context.stroke();
-
-            context.restore();
+            desenharBruxa();
 
             requestAnimationFrame(animar);
         }
@@ -57,11 +54,13 @@
             var distanciaX = Math.abs(x - xToque);
             var distanciaY = Math.abs(y - yToque);
 
-            // Pitágoras
+            // Pitágoras.
             if (distanciaX * distanciaX + distanciaY * distanciaY <= raio * raio) {
                 arrastando = true;
                 x = xToque;
                 y = yToque;
+                xAnterior = x; // Guardar a posição.
+                yAnterior = y;
             }
 
             if (navigator.userAgent.match(/Android/i)) {
@@ -71,6 +70,8 @@
 
         function touchMove(e) {
             if (arrastando) {
+                xAnterior = x; // Guardar a posição.
+                yAnterior = y;
                 x = e.changedTouches[0].pageX - canvas.offsetLeft;
                 y = e.changedTouches[0].pageY - canvas.offsetTop;
             }
@@ -78,6 +79,25 @@
 
         function touchEnd(e) {
             arrastando = false;
+        }
+
+        function desenharBruxa() {
+            var largOrigem = 96, largDestino = 64;
+            var xOrigem = (x >= xAnterior)
+                ? 0 // Direita
+                : 96; // Esquerda
+
+            context.drawImage(
+                imgBruxa,
+                xOrigem, // x na spritesheet
+                0, // y na spritesheet
+                largOrigem,
+                largOrigem,
+                x - largDestino / 2, // x no Canvas
+                y - largDestino / 2, // y no Canvas
+                largDestino,
+                largDestino
+            );
         }
     </script>
 </head>
