@@ -1,0 +1,20 @@
+# Arquivos ignorados.
+
+
+# Arquivos do Composer.
+vendor/*
+
+# Arquivos do NPM.
+node_modules/*
+
+# IDEs.
+# netbeans
+nbproject/*
+# eclipse
+.buildpath
+.project
+.settings/*
+# mvstudio
+.vs/*
+# phpstorm
+.idea/*

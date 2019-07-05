@@ -1,0 +1,5 @@
+# html-007-cdc-canvas-2
+
+# Anotacoes:
+- 1.2 instalando os prerequisitos
+    npm install -g cordova
