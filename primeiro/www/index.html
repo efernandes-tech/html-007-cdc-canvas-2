@@ -5,14 +5,15 @@
     <title>Primeiro Projeto</title>
     <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
     <script src="cordova.js"></script>
+    <script src="js/rAF.js"></script>
     <script>
         var canvas, context;
         var x, y, raio = 10;
         var vX = 10, vY = -20; // Velocidades.
 
         window.onload = function () {
-            // document.addEventListener('deviceready', iniciar);
-            iniciar();
+            document.addEventListener('deviceready', iniciar);
+            // iniciar();
         }
 
         function iniciar() {
