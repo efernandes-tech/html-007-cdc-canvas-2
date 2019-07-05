@@ -1,5 +1,9 @@
 # html-007-cdc-canvas-2
 
 # Anotacoes:
-- 1.2 instalando os prerequisitos
+- 1.2 Instalando os prerequisitos
     npm install -g cordova
+- 2.1 O projeto Cordova
+    cordova create primeiro
+    cd primeiro
+    cordova platform add android
