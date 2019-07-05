@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Arrastando Objeto Via Touch</title>
     <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
+    <link rel="stylesheet" type="text/css" href="index.css">
     <script src="cordova.js"></script>
     <script src="rAF.js"></script>
     <script>
@@ -48,8 +49,12 @@
         }
 
         function touchStart(e) {
-            var xToque = e.changedTouches[0].pageX - canvas.offsetLeft;
-            var yToque = e.changedTouches[0].pageY - canvas.offsetTop;
+            var posicao = converterParaCanvas(
+                e.changedTouches[0].pageX - canvas.offsetLeft,
+                e.changedTouches[0].pageY - canvas.offsetTop
+            );
+            var xToque = posicao.x;
+            var yToque = posicao.y;
 
             var distanciaX = Math.abs(x - xToque);
             var distanciaY = Math.abs(y - yToque);
@@ -72,8 +77,13 @@
             if (arrastando) {
                 xAnterior = x; // Guardar a posição.
                 yAnterior = y;
-                x = e.changedTouches[0].pageX - canvas.offsetLeft;
-                y = e.changedTouches[0].pageY - canvas.offsetTop;
+
+                var posicao = converterParaCanvas(
+                    e.changedTouches[0].pageX - canvas.offsetLeft,
+                    e.changedTouches[0].pageY - canvas.offsetTop
+                );
+                x = posicao.x;
+                y = posicao.y;
             }
         }
 
@@ -98,6 +108,13 @@
                 largDestino,
                 largDestino
             );
+        }
+
+        function converterParaCanvas(xToque, yToque) {
+            return {
+                x: canvas.width * xToque / canvas.offsetWidth,
+                y: canvas.height * yToque / canvas.offsetHeight
+            }
         }
     </script>
 </head>
