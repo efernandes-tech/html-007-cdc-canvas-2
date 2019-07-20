@@ -111,11 +111,11 @@
         // Variáveis principais.
         var imagens, animacao, colisor, nave, painel, criadorInimigos;
         var totalImagens = 0, carregadas = 0;
-        var musicaAcao;
+        var musicaAcao, somTiro, somExplosao;
 
         // Começa carregando as imagens e musicas.
         carregarImagens();
-        carregarMusicas();
+        carregarSons();
 
         function carregarImagens() {
             // Objeto contendo os nomes das imagens.
@@ -210,6 +210,15 @@
                     || (o1 instanceof Ovni && o2 instanceof Tiro) ) {
                     // Use o incremento que desejar.
                     painel.pontuacao += 10;
+                    somExplosao.seekTo(0);
+                    somExplosao.play();
+                }
+
+                // Nave com Ovni
+                if ( (o1 instanceof Nave && o2 instanceof Ovni)
+                    || (o1 instanceof Ovni && o2 instanceof Nave) ) {
+                    somExplosao.seekTo(0);
+                    somExplosao.play();
                 }
             }
 
@@ -284,12 +293,10 @@
             // }
         }
 
-        function carregarMusicas() {
-            musicaAcao = new Audio();
-            musicaAcao.src = 'snd/musica-acao.mp3';
-            musicaAcao.load();
-            musicaAcao.volume = 0.8;
-            musicaAcao.loop = true;
+        function carregarSons() {
+            musicaAcao = new Media('file:///android_asset/musica-acao.mp3');
+            somTiro = new Media('file:///android_asset/tiro.mp3');
+            somExplosao = new Media('file:///android_asset/explosao.mp3');
         }
 
         function mostrarLinkJogar() {
@@ -311,9 +318,14 @@
             painel.pontuacao = 0;
             // musicaAcao.play();
             animacao.ligar();
+
+            musicaAcao.seekTo(0);
+            musicaAcao.play();
         }
 
         function gameOver() {
+            musicaAcao.pause();
+
             // Tiro.
             ativarTiro(false);
 

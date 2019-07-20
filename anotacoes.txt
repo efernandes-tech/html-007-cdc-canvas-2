@@ -36,3 +36,7 @@
     cordova create nave-mobile-1
     cd nave-mobile-1
     cordova platform add android
+- 4.3 API de som do Cordova
+    cordova plugin add cordova-plugin-media
+    - Os sons do jogo estão na subpasta snd da pasta www.
+    - Copia-os para a subpasta platforms/android/assets do projeto Cordova.
