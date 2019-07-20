@@ -32,3 +32,7 @@
     cd touch
     cordova platform add android
     cordova run android
+- 4.2 Esqueleto do projeto
+    cordova create nave-mobile-1
+    cd nave-mobile-1
+    cordova platform add android
