@@ -16,10 +16,12 @@ function Direcional(imagem) {
 
     var direcional = this;
     var funcaoToque = function(e) {
-        direcional.direcaoPonto(
-            e.changedTouches[0].pageX - imagem.offsetLeft,
-            e.changedTouches[0].pageY - imagem.offsetTop
-        );
+        for (var i in e.changedTouches) {
+            direcional.direcaoPonto(
+                e.changedTouches[i].pageX - imagem.offsetLeft,
+                e.changedTouches[i].pageY - imagem.offsetTop
+            );
+        }
     }
     var funcaoCancela = function() {
         direcional.direcao = DIRECAO_NENHUMA;
@@ -51,7 +53,7 @@ Direcional.prototype = {
                 this.direcao = DIRECAO_NO;
             else if (y < alturaCelula * 2)
                 this.direcao = DIRECAO_O;
-            else
+            else if (y < alturaCelula * 3)
                 this.direcao = DIRECAO_SO;
 
         // 2ª coluna
@@ -64,7 +66,7 @@ Direcional.prototype = {
                 this.direcao = DIRECAO_S;
 
         // 3ª coluna
-        } else {
+        } else if (x < larguraCelula * 3) {
             if (y < alturaCelula)
                 this.direcao = DIRECAO_NE;
             else if (y < alturaCelula * 2)
