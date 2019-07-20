@@ -1,8 +1,9 @@
 // arquivo: nave.js
 
-function Nave(context, imagem, imgExplosao) {
+function Nave(context, direcional, imagem, imgExplosao) {
     this.context = context;
     // this.teclado = teclado;
+    this.direcional = direcional;
     this.imagem = imagem;
     this.x = 0;
     this.y = 0;
@@ -19,31 +20,41 @@ Nave.prototype = {
     atualizar: function() {
         var incremento = this.velocidade * this.animacao.decorrido / 1000;
 
-        /* if (this.teclado.pressionada(SETA_ESQUERDA)
-                && this.x > 0) {
+        var dir = this.direcional;
+        var esquerda = dir.direcao == DIRECAO_NO ||
+            dir.direcao == DIRECAO_O ||
+            dir.direcao == DIRECAO_SO;
+        var direita =   dir.direcao == DIRECAO_NE ||
+            dir.direcao == DIRECAO_L ||
+            dir.direcao == DIRECAO_SE;
+        var acima =     dir.direcao == DIRECAO_NO ||
+            dir.direcao == DIRECAO_N ||
+            dir.direcao == DIRECAO_NE;
+        var abaixo =    dir.direcao == DIRECAO_SO ||
+            dir.direcao == DIRECAO_S ||
+            dir.direcao == DIRECAO_SE;
+
+        if (esquerda && this.x > 0)
             this.x -= incremento;
-        }
-        if (this.teclado.pressionada(SETA_DIREITA)
-            && this.x < this.context.canvas.width - 36) {
+        if (direita && this.x < this.context.canvas.width - 36)
             this.x += incremento;
-        }
-        if (this.teclado.pressionada(SETA_ACIMA)
-            && this.y > 0) {
+        if (acima && this.y > 0)
             this.y -= incremento;
-        }
-        if (this.teclado.pressionada(SETA_ABAIXO)
-            && this.y < this.context.canvas.height - 48) {
+        if (abaixo && this.y < this.context.canvas.height - 48)
             this.y += incremento;
-        } */
     },
     desenhar: function() {
-        // if (this.teclado.pressionada(SETA_ESQUERDA)) {
-        //     this.spritesheet.linha = 1;
-        // } else if (this.teclado.pressionada(SETA_DIREITA)) {
-        //     this.spritesheet.linha = 2;
-        // } else {
-        //     this.spritesheet.linha = 0;
-        // }
+        var dir = this.direcional;
+        if (dir.direcao == DIRECAO_NO ||
+            dir.direcao == DIRECAO_O ||
+            dir.direcao == DIRECAO_SO)
+            this.spritesheet.linha = 1;
+        else if (dir.direcao == DIRECAO_NE ||
+            dir.direcao == DIRECAO_L ||
+            dir.direcao == DIRECAO_SE)
+            this.spritesheet.linha = 2;
+        else
+            this.spritesheet.linha = 0;
 
         this.spritesheet.desenhar(this.x, this.y);
         this.spritesheet.proximoQuadro();
