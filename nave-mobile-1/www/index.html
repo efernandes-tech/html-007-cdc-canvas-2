@@ -1,140 +1,42 @@
-<!-- arquivo: jogo-definitivo.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
-    <link rel="shortcut icon" type="image/png" href="img/nave.png"/>
     <title>Jogo de Nave - Controlado via Touch</title>
+    <meta name="viewport" content="width=device-width,
+        height=device-height, user-scalable=no,
+        initial-scale=1, maximum-scale=1, minimum-scale=1">
+
     <script src="cordova.js"></script>
     <script src="rAF.js"></script>
-    <script src="animacao.js" type="text/javascript"></script>
-    <script src="colisor.js" type="text/javascript"></script>
-    <script src="fundo.js" type="text/javascript"></script>
-    <script src="nave.js" type="text/javascript"></script>
-    <script src="ovni.js" type="text/javascript"></script>
-    <script src="tiro.js" type="text/javascript"></script>
+    <script src="animacao.js"></script>
+    <script src="spritesheet.js"></script>
+    <script src="colisor.js"></script>
+    <script src="fundo.js"></script>
+    <script src="nave.js"></script>
+    <script src="ovni.js"></script>
+    <script src="painel.js"></script>
+    <script src="tiro.js"></script>
+    <script src="explosao.js"></script>
     <script src="direcional.js"></script>
-    <script src="spritesheet.js" type="text/javascript"></script>
-    <script src="explosao.js" type="text/javascript"></script>
-    <script src="painel.js" type="text/javascript"></script>
-    <style type="text/css">
-    body {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-    }
-    #jogo_nave {
-        width: 100%;
-        height: auto;
-    }
-    #link_jogar {
-        display: none;
-        text-align: center;
-        padding: 20px;
-    }
-    #link_jogar a {
-        /* Inicia oculto. */
-        display: inline-block;
-        /* Cores e fundo. */
-        color: yellow;
-        background: url(img/botao-jogar.png);
-        /* Fonte. */
-        font-size: 20px;
-        font-family: sans-serif;
-        /* Sem sublinhado e com sombra. */
-        text-decoration: none;
-        text-shadow: 2px 2px 5px black;
-        /* Posicionamento. */
-        position: absolute;
-        left: 220px;
-        top: 330px;
-        /* A imagem do botão é 72x72, descontamos os paddings. */
-        width: 52px;
-        height: 26px;
-        padding: 23px 10px;
-    }
-    #postar_pontuacao {
-        /* Ocultar o link. */
-        display: none;
-        /* Visual a gosto! */
-        color: yellow;
-        position: absolute;
-        left: 180px;
-        top: 410px;
-    }
-    #controles {
-        display: none;
-    }
-    #direcional {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-    }
-    #disparo {
-        position: absolute;
-        right: 40px;
-        bottom: 64px;
-    }
-    </style>
-</head>
-<body>
-    <script type="text/javascript">
-    window.fbAsyncInit = function() {
-        FB.init({
-            appId            : '242642883161552',
-            autoLogAppEvents : true,
-            xfbml            : true,
-            version          : 'v3.0'
-        });
-    };
 
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/pt_BR/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-    </script>
-
-    <canvas id="canvas_animacao" width="500" height="500"></canvas>
-
-    <a id="link_jogar" href="javascript: iniciarJogo()">Jogar</a>
-
-    <a id="postar_pontuacao" href="javascript: postarPontuacao()">
-        Compartilhar Pontua&ccedil;&atilde;o
-    </a>
-
-    <br>
-
-    <div id="botao_compartilhar" class="fb-share-button" data-href="https://html-004-cdc-canvas.herokuapp.com/" data-type="button_count"></div>
-
-    <p>
-        Setas: movimento <br>
-        Espa&ccedil;o: tiro <br>
-        Enter: pausa
-    </p>
-
-    <div id="controles">
-        <img src="img/direcional.png" id="direcional">
-        <img src="img/botao-jogar.png" id="disparo">
-    </div>
-
-    <script type="text/javascript">
-        // Canvas e context.
-        var canvas = document.getElementById('canvas_animacao');
-        var context = canvas.getContext('2d');
-
-        // Variáveis principais.
-        var imagens, animacao, colisor, nave, painel, criadorInimigos;
+    <script>
+        var canvas, context;
+        var imagens, animacao, colisor, nave, criadorInimigos;
         var totalImagens = 0, carregadas = 0;
         var musicaAcao, somTiro, somExplosao;
 
-        // Começa carregando as imagens e musicas.
-        carregarImagens();
-        carregarSons();
+	    window.onload = function() {
+            // document.addEventListener('deviceready', iniciar);
+            iniciar();
+        }
+
+	    function iniciar() {
+            canvas = document.getElementById('jogo_nave');
+            context = canvas.getContext('2d');
+            carregarImagens();
+            carregarSons();
+        }
 
         function carregarImagens() {
             // Objeto contendo os nomes das imagens.
@@ -158,31 +60,18 @@
             }
         }
 
+        function carregarSons() {
+            musicaAcao = new Media(cordova.file.applicationDirectory+'www/snd/musica-acao.mp3');
+            somTiro = new Media(cordova.file.applicationDirectory+'www/snd/tiro.mp3');
+            somExplosao = new Media(cordova.file.applicationDirectory+'www/snd/explosao.mp3');
+        }
+
         function carregando() {
-            context.save();
-
-            // Fundo.
-            context.drawImage(imagens.espaco, 0, 0, canvas.width, canvas.height);
-
-            // Texto "Carregando"
-            context.fillStyle = 'white';
-            context.strokeStyle = 'black';
-            context.font = '50px sans-serif';
-            context.fillText("Carregando...", 100, 200);
-            context.strokeText("Carregando...", 100, 200);
-
-            // Barra de loading
             carregadas++;
-            var tamanhoTotal = 300;
-            var tamanho = carregadas / totalImagens * tamanhoTotal;
-            context.fillStyle = 'yellow';
-            context.fillRect(100, 250, tamanho, 50);
-
-            context.restore();
 
             if (carregadas == totalImagens) {
                 iniciarObjetos();
-                mostrarLinkJogar();
+                document.getElementById('link_jogar').style.display = 'block';
             }
         }
 
@@ -194,7 +83,6 @@
             espaco = new Fundo(context, imagens.espaco);
             estrelas = new Fundo(context, imagens.estrelas);
             nuvens = new Fundo(context, imagens.nuvens);
-            // nave = new Nave(context, teclado, imagens.nave, imagens.explosao);
             direcional = new Direcional(document.getElementById('direcional'));
             nave = new Nave(context, direcional, imagens.nave, imagens.explosao);
             painel = new Painel(context, nave);
@@ -205,6 +93,7 @@
             animacao.novoSprite(nuvens);
             animacao.novoSprite(painel);
             animacao.novoSprite(nave);
+
             colisor.novoSprite(nave);
             animacao.novoProcessamento(colisor);
 
@@ -222,6 +111,12 @@
             nave.velocidade = 200;
 
             criacaoInimigos();
+
+            // Game Over
+            nave.acabaramVidas = function() {
+                animacao.desligar();
+                gameOver();
+            }
 
             // Pontuação
             colisor.aoColidir = function(o1, o2) {
@@ -242,12 +137,6 @@
                 }
             }
 
-            // Game Over
-            nave.acabaramVidas = function() {
-                animacao.desligar();
-                gameOver();
-            }
-
             // Disparo
             document.getElementById('disparo').addEventListener(
                 'touchstart',
@@ -261,9 +150,9 @@
 
         function criacaoInimigos() {
             criadorInimigos = {
-                ultimoOvni: new Date().getTime(),
+                ultimoOvni: Date.now(),
                 processar: function() {
-                    var agora = new Date().getTime();
+                    var agora = Date.now();
                     var decorrido = agora - this.ultimoOvni;
                     if (decorrido > 1000) {
                         novoOvni();
@@ -293,61 +182,13 @@
             colisor.novoSprite(ovni);
         }
 
-        function pausarJogo() {
-            if (animacao.ligado) {
-                animacao.desligar();
-                ativarTiro(false);
-
-                // Escrever "Pausado".
-                context.save();
-                context.fillStyle = 'white';
-                context.strokeStyle = 'black';
-                context.font = '50px sans-serif';
-                context.fillText("Pausado", 160, 200);
-                context.strokeText("Pausado", 160, 200);
-                context.restore();
-            } else {
-                criadorInimigos.ultimoOvni = new Date().getTime();
-                animacao.ligar();
-                ativarTiro(true);
-            }
-        }
-
-        function ativarTiro(ativar) {
-            // if (ativar) {
-            //     teclado.disparou(ESPACO, function() {
-            //         nave.atirar();
-            //     });
-            // } else {
-            //     teclado.disparou(ESPACO, null);
-            // }
-        }
-
-        function carregarSons() {
-            musicaAcao = new Media('file:///android_asset/musica-acao.mp3');
-            somTiro = new Media('file:///android_asset/tiro.mp3');
-            somExplosao = new Media('file:///android_asset/explosao.mp3');
-        }
-
-        function mostrarLinkJogar() {
-            document.getElementById('link_jogar').style.display = 'block';
-        }
-
         function iniciarJogo() {
-            criadorInimigos.ultimoOvni = new Date().getTime();
-
-            // Tiro.
-            ativarTiro(true);
-
-            // Pausa.
-            // teclado.disparou(ENTER, pausarJogo);
+            criadorInimigos.ultimoOvni = Date.now();
 
             document.getElementById('link_jogar').style.display = 'none';
-            document.getElementById('postar_pontuacao').style.display = 'none';
             document.getElementById('controles').style.display = 'block';
 
             painel.pontuacao = 0;
-            // musicaAcao.play();
             animacao.ligar();
 
             musicaAcao.seekTo(0);
@@ -357,72 +198,87 @@
         function gameOver() {
             musicaAcao.pause();
 
-            // Tiro.
-            ativarTiro(false);
+            document.getElementById('link_jogar').style.display = 'block';
+            document.getElementById('controles').style.display = 'none';
 
-            // Pausa.
-            direcional.direcao = DIRECAO_NENHUMA;
-            // teclado.disparou(ENTER, null);
-
-            // Parar a música e rebobinar.
-            // musicaAcao.pause();
-            // musicaAcao.currentTime = 0.0;
-
-            // Fundo.
-            context.drawImage(imagens.espaco, 0, 0, canvas.width, canvas.height);
-
-            // Texto "Game Over".
-            context.save();
-            context.fillStyle = 'white';
-            context.strokeStyle = 'black';
-            context.font = '70px sans-serif';
-            context.fillText("GAME OVER", 40, 200);
-            context.strokeText("GAME OVER", 40, 200);
-            context.restore();
-
-            // Volta o link "Jogar".
-            mostrarLinkJogar();
-
-            // Restaurar as condições da nave.
             nave.vidasExtras = 3;
-
             nave.posicionar();
-
             animacao.novoSprite(nave);
-
             colisor.novoSprite(nave);
 
-            // Tirar todos os inimigos da tela.
             removerInimigos();
 
-            // Link de postar pontuação.
-            document.getElementById('postar_pontuacao').style.display = 'block';
-            document.getElementById('controles').style.display = 'none';
+            direcional.direcao = DIRECAO_NENHUMA;
+            alert('Game Over');
         }
 
         function removerInimigos() {
             for (var i in animacao.sprites) {
-                if (animacao.sprites[i] instanceof Ovni) {
-                    animacao.excluirSprite(animacao.sprites[i]);
-                }
+                if (animacao.sprites[i] instanceof Ovni ||
+                    animacao.sprites[i] instanceof Tiro)
+                animacao.excluirSprite(animacao.sprites[i]);
             }
         }
-
-        function postarPontuacao() {
-            // API de feed do Facebook.
-            FB.ui({
-                method: 'feed',
-                name: 'Jogo de Nave',
-                caption: 'Jogue e compartilhe com seus amigos!',
-                description: (
-                    'Minha pontuação foi: ' + painel.pontuacao
-                ),
-                link: 'https://html-004-cdc-canvas.herokuapp.com/'
-            },
-            function(response) {
-
-            });
-        }
     </script>
+
+    <style type="text/css">
+    body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+    }
+    #jogo_nave {
+        width: 100%;
+        height: auto;
+    }
+    #link_jogar {
+        display: none;
+        text-align: center;
+        padding: 20px;
+    }
+    #link_jogar a {
+        /* Cores e fundo. */
+        color: yellow;
+        background: url(img/botao-jogar.png);
+        /* Fonte. */
+        font-size: 20px;
+        font-family: sans-serif;
+        /* Sem sublinhado e com sombra. */
+        text-decoration: none;
+        text-shadow: 2px 2px 5px black;
+        display: inline-block;
+        /* A imagem do botão é 72x72, descontamos os paddings. */
+        width: 52px;
+        height: 26px;
+        padding: 23px 10px;
+    }
+    #controles {
+        display: none;
+    }
+    #direcional {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    #disparo {
+        position: absolute;
+        right: 40px;
+        bottom: 64px;
+    }
+    </style>
+</head>
+<body>
+
+    <canvas id="jogo_nave" width="500" height="500"></canvas>
+
+    <div id="link_jogar">
+        <a href="javascript: iniciarJogo()">Jogar</a>
+     </div>
+
+    <div id="controles">
+        <img src="img/direcional.png" id="direcional">
+        <img src="img/botao-jogar.png" id="disparo">
+    </div>
+
 </body>
 </html>

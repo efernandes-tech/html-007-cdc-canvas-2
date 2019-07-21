@@ -2,7 +2,6 @@
 
 function Nave(context, direcional, imagem, imgExplosao) {
     this.context = context;
-    // this.teclado = teclado;
     this.direcional = direcional;
     this.imagem = imagem;
     this.x = 0;

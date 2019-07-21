@@ -54,10 +54,10 @@ Colisor.prototype = {
                 // Ainda abstraindo a fórmula!
                 if (this.retangulosColidem(rets1[i], rets2[j])) {
                     // Eles colidem, vamos notificá-los.
-                    sprite1.colidiuCom(sprite2);
-                    sprite2.colidiuCom(sprite1);
+                    sprite1.colidiuCom(sprite2, rets2[j]);
+                    sprite2.colidiuCom(sprite1, rets1[i]);
                     // Tratador geral
-                    if (this.aoColidir) this.aoColidir(sprite1, sprite2);
+                    if (this.aoColidir) this.aoColidir(sprite1, sprite2, rets1[i], rets2[j]);
                     // Não precisa terminar de ver todos os retângulos
                     break colisoes;
                 }

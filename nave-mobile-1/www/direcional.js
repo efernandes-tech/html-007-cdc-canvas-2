@@ -1,4 +1,5 @@
-// direcional.js
+// Arquivo: direcional.js
+
 var DIRECAO_NENHUMA = 0;
 var DIRECAO_N = 1; // norte
 var DIRECAO_S = 2; // sul
@@ -62,7 +63,7 @@ Direcional.prototype = {
                 this.direcao = DIRECAO_N;
             else if (y < alturaCelula * 2)
                 this.direcao = DIRECAO_NENHUMA; // Centro do direcional
-            else
+            else if (y < alturaCelula * 3)
                 this.direcao = DIRECAO_S;
 
         // 3ª coluna
@@ -71,7 +72,7 @@ Direcional.prototype = {
                 this.direcao = DIRECAO_NE;
             else if (y < alturaCelula * 2)
                 this.direcao = DIRECAO_L;
-            else
+            else if (y < alturaCelula * 3)
                 this.direcao = DIRECAO_SE;
         }
     }
