@@ -66,3 +66,4 @@
     - Copia-os para a subpasta platforms/android/assets do projeto Cordova.
 - 4.6 API do acelerômetro do Cordova
     cordova plugin add cordova-plugin-device-motion
+- 4.7 Adaptando o Canvas ao tamanho da tela

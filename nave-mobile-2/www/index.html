@@ -33,6 +33,10 @@
 	    function iniciar() {
             canvas = document.getElementById('jogo_nave');
             context = canvas.getContext('2d');
+
+            canvas.width = screen.availWidth;
+            canvas.height = screen.availHeight;
+
             carregarImagens();
             carregarSons();
         }
@@ -103,19 +107,19 @@
             estrelas.velocidade = 150;
             nuvens.velocidade = 500;
 
-            // Nave
+            // Nave.
             nave.posicionar();
             nave.velocidade = 200;
 
             criacaoInimigos();
 
-            // Game Over
+            // Game Over.
             nave.acabaramVidas = function() {
                 animacao.desligar();
                 gameOver();
             }
 
-            // Pontuação
+            // Pontuação e som das explosões.
             colisor.aoColidir = function(o1, o2) {
                 // Tiro com Ovni.
                 if ( (o1 instanceof Tiro && o2 instanceof Ovni)
@@ -148,9 +152,11 @@
         function criacaoInimigos() {
             criadorInimigos = {
                 ultimoOvni: Date.now(),
+
                 processar: function() {
                     var agora = Date.now();
                     var decorrido = agora - this.ultimoOvni;
+
                     if (decorrido > 1000) {
                         novoOvni();
                         this.ultimoOvni = agora;
@@ -180,8 +186,17 @@
         }
 
         function iniciarJogo() {
+            primeiraLeitura = true;
+
             acelerometro = navigator.accelerometer.watchAcceleration(
                 function(aceleracao) {
+                    // Na primeira leitura, calibramos a nave
+                    if (primeiraLeitura) {
+                        nave.repouso.x = aceleracao.x;
+                        nave.repouso.y = aceleracao.y;
+                        primeiraLeitura = false;
+                    }
+
                     nave.aceleracao.x = aceleracao.x;
                     nave.aceleracao.y = aceleracao.y;
                 },
@@ -232,44 +247,48 @@
     </script>
 
     <style type="text/css">
-    body {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-    }
-    #jogo_nave {
-        width: 100%;
-        height: auto;
-    }
-    #link_jogar {
-        display: none;
-        text-align: center;
-        padding: 20px;
-    }
-    #link_jogar a {
-        /* Cores e fundo. */
-        color: yellow;
-        background: url(img/botao-jogar.png);
-        /* Fonte. */
-        font-size: 20px;
-        font-family: sans-serif;
-        /* Sem sublinhado e com sombra. */
-        text-decoration: none;
-        text-shadow: 2px 2px 5px black;
-        display: inline-block;
-        /* A imagem do botão é 72x72, descontamos os paddings. */
-        width: 52px;
-        height: 26px;
-        padding: 23px 10px;
-    }
-    #controles {
-        display: none;
-    }
-    #disparo {
-        position: absolute;
-        right: 40px;
-        bottom: 64px;
-    }
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #jogo_nave {
+            position: absolute;
+            z-index: 0;
+        }
+        #link_jogar {
+            display: none;
+            position: absolute;
+            z-index: 1;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+        #link_jogar a {
+            /* Cores e fundo. */
+            color: yellow;
+            background: url(img/botao-jogar.png);
+            /* Fonte. */
+            font-size: 20px;
+            font-family: sans-serif;
+            /* Sem sublinhado e com sombra. */
+            text-decoration: none;
+            text-shadow: 2px 2px 5px black;
+            display: inline-block;
+            /* A imagem do botão é 72x72, descontamos os paddings. */
+            width: 52px;
+            height: 26px;
+            padding: 23px 10px;
+        }
+        #controles {
+            display: none;
+        }
+        #disparo {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
