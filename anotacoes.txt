@@ -17,6 +17,10 @@
         cd touch
         cordova platform add android
         cordova run android
+    - Pasta "nave-mobile-2"
+        cd nave-mobile-2
+        cordova platform add android
+        cordova run android
 
 
 
@@ -60,3 +64,5 @@
     cordova plugin add cordova-plugin-media
     - Os sons do jogo estão na subpasta snd da pasta www.
     - Copia-os para a subpasta platforms/android/assets do projeto Cordova.
+- 4.6 API do acelerômetro do Cordova
+    cordova plugin add cordova-plugin-device-motion
