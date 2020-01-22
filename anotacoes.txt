@@ -1,5 +1,25 @@
 # html-007-cdc-canvas-2
 
+# Run:
+    - Pasta "primeiro".
+        cd primeiro
+        cordova platform add browser
+        cordova run browser
+        cordova platform add android
+        cordova run android
+    - Pasta "nave-mobile-1"
+        cd nave-mobile-1
+        cordova platform add browser
+        cordova run browser
+        cordova platform add android
+        cordova run android
+    - Pasta "touch".
+        cd touch
+        cordova platform add android
+        cordova run android
+
+
+
 # Anotacoes:
 - 1.2 Instalando os prerequisitos
     npm install -g cordova
