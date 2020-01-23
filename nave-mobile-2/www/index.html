@@ -24,10 +24,11 @@
         var imagens, animacao, colisor, nave, criadorInimigos;
         var totalImagens = 0, carregadas = 0;
         var musicaAcao, somTiro, somExplosao;
+        var acelerometro, primeiraLeitura;
 
 	    window.onload = function() {
-            // document.addEventListener('deviceready', iniciar);
-            iniciar();
+            document.addEventListener('deviceready', iniciar);
+            // iniciar();
         }
 
 	    function iniciar() {
@@ -233,7 +234,6 @@
 
             removerInimigos();
 
-            // direcional.direcao = DIRECAO_NENHUMA;
             alert('Game Over');
         }
 

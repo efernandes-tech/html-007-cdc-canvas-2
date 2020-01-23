@@ -2,7 +2,7 @@
 
 function Colisor() {
     this.sprites = [];
-   this.aoColidir = null;
+    this.aoColidir = null;
     this.spritesExcluir = [];
 }
 
