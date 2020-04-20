@@ -1,30 +1,39 @@
 # html-007-cdc-canvas-2
 
 # Run:
-    - Pasta "primeiro".
+    - Pasta "primeiro":
         cd primeiro
+
         cordova platform add browser
         cordova run browser
+
         cordova platform add android
         cordova run android
-    - Pasta "nave-mobile-1"
+
+    - Pasta "nave-mobile-1":
         cd nave-mobile-1
+
         cordova platform add browser
         cordova run browser
+
         cordova platform add android
         cordova run android
-    - Pasta "touch".
+
+    - Pasta "touch":
         cd touch
+
         cordova platform add android
         cordova run android
-    - Pasta "nave-mobile-2"
+
+    - Pasta "nave-mobile-2":
         cd nave-mobile-2
+
         cordova platform add android
         cordova run android
 
 
 
-# Anotacoes:
+# Anotações:
 - 1.2 Instalando os prerequisitos
     npm install -g cordova
 - 2.1 O projeto Cordova
