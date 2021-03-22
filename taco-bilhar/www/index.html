@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1">
+    <title>Taco de Bilhar</title>
+    <script src="cordova.js"></script>
+    <script src="rAF.js"></script>
+    <script src="hammer.min.js"></script>
+    <script src="barra-forca.js"></script>
+    <script src="taco.js"></script>
+    <script>
+        var canvas, context;
+        var imgTaco, imgPonteiro, somTacada;
+        var taco, barraForca;
+        window.onload = function () {
+            canvas = document.getElementById('taco_bilhar');
+            context = canvas.getContext('2d');
+            canvas.width = screen.availWidth;
+            canvas.height = screen.availHeight;
+            //document.addEventListener('deviceready', iniciar);
+            iniciar();
+        }
+
+        function iniciar() {
+            imgTaco = new Image();
+            imgTaco.src = 'img/taco.png';
+            imgPonteiro = new Image();
+            imgPonteiro.src = 'img/ponteiro.png';
+            //somTacada = new Media('file:///android_asset/colisao.mp3');
+            iniciarObjetos();
+            requestAnimationFrame(animar);
+        }
+
+        function iniciarObjetos() {
+            var hammer = new Hammer(canvas);
+
+            taco = new Taco(context, imgTaco, hammer);
+            taco.raio = 120;
+            taco.x = 125;
+            taco.y = canvas.height / 2 - 50;
+            barraForca = new BarraForca(context, imgPonteiro, taco, hammer);
+            barraForca.x = taco.x - 100;
+            barraForca.y = taco.y + taco.raio + 25;
+            barraForca.largura = 200;
+            barraForca.altura = 50;
+        }
+
+        function animar() {
+            // Fundo verde
+            context.save();
+            context.fillStyle = '#050';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.restore();
+            taco.desenhar();
+            barraForca.desenhar();
+            requestAnimationFrame(animar);
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            background: #333;
+        }
+
+        canvas {
+            height: 100%;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="taco_bilhar"></canvas>
+</body>
+
+</html>

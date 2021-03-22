@@ -31,6 +31,15 @@
         cordova platform add android
         cordova run android
 
+    - Pasta "taco-bilhar":
+        cd taco-bilhar
+
+        cordova platform add browser
+        cordova run browser
+
+        cordova platform add android
+        cordova run android
+
 
 
 # Anotações:
@@ -76,3 +85,8 @@
 - 4.6 API do acelerômetro do Cordova
     cordova plugin add cordova-plugin-device-motion
 - 4.7 Adaptando o Canvas ao tamanho da tela
+- 5.2 Barra de ajuste de força
+    cordova create taco-bilhar
+    cd taco-bilhar
+    cordova platform add android
+    cordova plugin add cordova-plugin-media
