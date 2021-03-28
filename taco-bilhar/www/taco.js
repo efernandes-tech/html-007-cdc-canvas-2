@@ -45,7 +45,7 @@ Taco.prototype = {
         ctx.save();
         ctx.translate(this.x, this.y);
         ctx.rotate(radianos);
-        ctx.drawImage(this.imagem, this.x - 7, this.y + this.forca,
+        ctx.drawImage(this.imagem, -7, this.deslocamento(),
             this.imagem.width, this.imagem.height);
         ctx.restore();
     },
@@ -90,4 +90,29 @@ Taco.prototype = {
             this.rotacao = rotacao % 360;
         }
     },
+    darTacada: function (duracao) {
+        if (this.tacada) return; // Já está em uma tacada
+        this.tacada = true;
+        this.duracaoTacada = duracao;
+        this.inicioTacada = Date.now();
+    },
+    deslocamento: function () {
+        // Não foi disparada tacada
+        if (!this.tacada) return this.forca;
+        // continua ...
+        // Tempo decorrido
+        var agora = Date.now();
+        var decorrido = agora - this.inicioTacada;
+        // Deslocamento acumulado
+        var distancia = this.forca / this.duracaoTacada * decorrido;
+        // Completou
+        if (decorrido >= this.duracaoTacada) {
+            distancia = this.forca;
+            this.tacada = false;
+
+            // Notificar o jogo
+            if (this.aposTacada) this.aposTacada();
+        }
+        return this.forca - distancia;
+    }
 }
