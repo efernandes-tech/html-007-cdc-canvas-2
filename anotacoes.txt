@@ -90,3 +90,4 @@
     cd taco-bilhar
     cordova platform add android
     cordova plugin add cordova-plugin-media
+- 5.3 Rotacionando um taco de bilhar
